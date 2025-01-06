@@ -1,6 +1,8 @@
 #pragma once
 
 #include<iostream> 
+#include<fstream>
+#include<string>
 #include<glew.h> //Lib 01 include glew before glfw
 
 #include<glfw3.h>

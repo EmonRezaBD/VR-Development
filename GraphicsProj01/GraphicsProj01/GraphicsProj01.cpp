@@ -6,6 +6,59 @@ void framebuffer_resize_callback(GLFWwindow* window, int fbw, int fbH)
 	glViewport(0, 0, fbw, fbH);
 }
 
+bool loadShaders(GLuint& program)
+{
+	char infoLog[512];
+	GLint success;
+
+	string temp = "";
+	string src = "";
+
+	ifstream in_file;
+
+	//Vertex
+
+	in_file.open("vertex_core.glsl");
+
+	if (in_file.is_open())
+	{
+		while (getline(in_file, temp))
+		{
+			src += temp = "\n";
+		}
+	}
+	else
+	{
+		cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEX_FILE\n";
+	}
+	in_file.close();
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	const GLchar* vertSrc = src.c_str();
+	glShaderSource(vertexShader, 1, &vertSrc, NULL);
+	glCompileShader(vertexShader);
+
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		cout << "ERROR::LOADSHADERS::COULD_NOT_COMPILE_VERTEX_SHADER\n";
+		cout << infoLog << "\n";
+	}
+
+	temp = "";
+	src = "";
+
+	//Fragment
+
+	//Program
+
+
+	//End
+	glDeleteShader(vertexShader);
+
+}
+
 int main()
 {
 	cout << "Start program\n";
@@ -44,6 +97,11 @@ int main()
 		cout << "ERROR:MAIN.CPP::GLEW_INIT_FAILED\n";
 		glfwTerminate();
 	}
+	//Shader init
+	GLuint core_program;
+	loadShaders(core_program);
+
+	//Model
 	
 	//Main loop
 	while (!glfwWindowShouldClose(window))
