@@ -1,7 +1,4 @@
 ﻿  GraphicsProj01.cpp
-F:\GithubRepo\VR-Development\GraphicsProj01\GraphicsProj01\GraphicsProj01.cpp(6,24): error C2660: 'glfwCreateWindow': function does not take 3 arguments
-      F:\GithubRepo\VR-Development\GraphicsProj01\GLFW\include\glfw3.h(3235,21):
-      see declaration of 'glfwCreateWindow'
-      F:\GithubRepo\VR-Development\GraphicsProj01\GraphicsProj01\GraphicsProj01.cpp(6,24):
-      while trying to match the argument list '(int, int, const char [5])'
-  
+  GraphicsProj01.vcxproj -> F:\GithubRepo\VR-Development\GraphicsProj01\Debug\GraphicsProj01.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
