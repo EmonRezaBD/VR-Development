@@ -1,8 +1,5 @@
 ﻿  GraphicsProj01.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(2010,13): error C3856: 'std': symbol is not a class template
-  (compiling source file 'GraphicsProj01.cpp')
-  
-F:\GithubRepo\VR-Development\GraphicsProj01\GLEW\include\glew.h(19887,1): fatal  error C1907: unable to recover from previous error(s); stopping compilation
-  INTERNAL COMPILER ERROR in 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\bin\HostX86\x86\CL.exe'
-      Please choose the Technical Support command on the Visual C++
-      Help menu, or open the Technical Support help file for more information
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  GraphicsProj01.vcxproj -> F:\GithubRepo\VR-Development\GraphicsProj01\Debug\GraphicsProj01.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

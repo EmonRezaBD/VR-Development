@@ -1,4 +1,4 @@
 ﻿  GraphicsProj01.cpp
-F:\GithubRepo\VR-Development\GraphicsProj01\GraphicsProj01\libs.h(4,9): error C1083: Cannot open include file: 'glfw3.h': No such file or directory
+F:\GithubRepo\VR-Development\GraphicsProj01\GraphicsProj01\libs.h(6,9): error C1083: Cannot open include file: 'glew.h': No such file or directory
   (compiling source file 'GraphicsProj01.cpp')
   

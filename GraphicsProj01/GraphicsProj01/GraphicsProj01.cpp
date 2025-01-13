@@ -8,6 +8,7 @@ void framebuffer_resize_callback(GLFWwindow* window, int fbw, int fbH)
 
 bool loadShaders(GLuint& program)
 {
+	bool loadSuccess = true;
 	char infoLog[512];
 	GLint success;
 
@@ -24,12 +25,14 @@ bool loadShaders(GLuint& program)
 	{
 		while (getline(in_file, temp))
 		{
-			src += temp = "\n";
+			src += temp + "\n";
 		}
 	}
 	else
 	{
 		cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_VERTEX_FILE\n";
+		loadSuccess = false;
+
 	}
 	in_file.close();
 
@@ -44,18 +47,68 @@ bool loadShaders(GLuint& program)
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		cout << "ERROR::LOADSHADERS::COULD_NOT_COMPILE_VERTEX_SHADER\n";
 		cout << infoLog << "\n";
+		loadSuccess = false;
+
 	}
 
 	temp = "";
 	src = "";
 
 	//Fragment
+	in_file.open("fragment_core.glsl");
+
+	if (in_file.is_open())
+	{
+		while (getline(in_file, temp))
+		{
+			src += temp + "\n";
+		}
+	}
+	else
+	{
+		cout << "ERROR::LOADSHADERS::COULD_NOT_OPEN_FRAGMENT_FILE\n";
+		loadSuccess = false;
+	}
+	in_file.close();
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	const GLchar* fragSrc = src.c_str();
+	glShaderSource(fragmentShader, 1, &fragSrc, NULL);
+	glCompileShader(fragmentShader);
+
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		cout << "ERROR::LOADSHADERS::COULD_NOT_COMPILE_FRAGMENT_SHADER\n";
+		cout << infoLog << "\n";
+		loadSuccess = false;
+
+	}
 
 	//Program
+	program = glCreateProgram();
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
 
+	glLinkProgram(program);
+
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(program, 512, NULL, infoLog);
+		cout << "ERROR::LOADSHSDERS::COULD_NOT_LINK_PROGRAM\n";
+		cout << infoLog << "\n";
+		loadSuccess = false;
+
+	}
 
 	//End
+	glUseProgram(0);
 	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	return loadSuccess;
 
 }
 
@@ -97,9 +150,15 @@ int main()
 		cout << "ERROR:MAIN.CPP::GLEW_INIT_FAILED\n";
 		glfwTerminate();
 	}
+
+	//OPENGL OPTIONS
+
+
 	//Shader init
 	GLuint core_program;
-	loadShaders(core_program);
+	if (!loadShaders(core_program)) {
+		glfwTerminate();
+	}
 
 	//Model
 	
@@ -124,7 +183,13 @@ int main()
 	}
 
 	//End of the program
+	glfwDestroyWindow(window);
 	glfwTerminate();
+
+	//Delete program
+	glDeleteProgram(core_program);
+
+	//Delete VAO and Buffers
 
 	return 0; 
 }
