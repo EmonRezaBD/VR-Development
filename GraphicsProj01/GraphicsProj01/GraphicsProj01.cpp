@@ -1,6 +1,14 @@
 #include "libs.h"
 using namespace std;
 
+void updateInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+}
+
 void framebuffer_resize_callback(GLFWwindow* window, int fbw, int fbH)
 {
 	glViewport(0, 0, fbw, fbH);
@@ -152,7 +160,15 @@ int main()
 	}
 
 	//OPENGL OPTIONS
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK); //we don't want to see the backside of the triangle
+	glFrontFace(GL_CCW);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//Shader init
 	GLuint core_program;
@@ -169,8 +185,11 @@ int main()
 		glfwPollEvents();
 		//update
 
+		updateInput(window);
 		//draw
-		  //clear
+		
+		
+		//clear
 		glClearColor(0.f, 0.f, 0.f, 1.f);//alpha is for opacity
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
