@@ -16,3 +16,11 @@
 #include<gtc\type_ptr.hpp>
 
 #include<SOIL2.h> //Lib 03 for texture and images
+
+
+struct Vertex
+{
+	glm::vec3 position;
+	glm::vec3 color;
+	glm::vec2 texcoord;
+};

@@ -1,6 +1,23 @@
 #include "libs.h"
 using namespace std;
 
+Vertex vertices[] =
+{
+	//Positions						//color						//Texcoords
+	glm::vec3(0.0f, 0.5f, 0.f),		glm::vec3(1.f,0.f,0.f),		glm::vec2(0.f,1.f),
+	glm::vec3(-0.5f, -0.5f, 0.f),	glm::vec3(0.f,1.f,0.f),		glm::vec2(0.f, 0.f),
+	glm::vec3(0.5f, -0.5f, 0.f),	glm::vec3(0.f, 0.f, 1.f),	glm::vec2(1.f,0.f)
+};
+unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
+
+GLuint indices[] =
+{
+	0,1,2
+
+};
+
+unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+
 void updateInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -178,6 +195,45 @@ int main()
 
 	//Model
 	
+	//VAO, VBO, EBO
+	//GEN VAO AND BIND
+	GLuint VAO;
+	glCreateVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	//GEN VBO AND BIND AND SEND DATA
+	//VBO = vertex buffer object: will send the data to graphics card
+	//EBO = element buffer object : will send the index data
+
+	GLuint VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//GEN EBO AND BIND SEND DATA
+	GLuint	EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	//SET vertex attributes and enables, input essembly : we tell here the GPU, how we are gonna use our data
+	//positon
+	GLuint attribLoc = glGetAttribLocation(core_program, "vertex_position");
+	glVertexAttribPointer(attribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position)); //offset: how much memory is next attribute
+	glEnableVertexAttribArray(attribLoc);
+	//color
+	attribLoc = glGetAttribLocation(core_program, "vertex_color");
+	glVertexAttribPointer(attribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color)); //offset: how much memory is next attribute
+	glEnableVertexAttribArray(attribLoc);
+	//texcoord
+	attribLoc = glGetAttribLocation(core_program, "vertex_texcoord");
+	glVertexAttribPointer(attribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texcoord)); //offset: how much memory is next attribute
+	glEnableVertexAttribArray(attribLoc);
+
+	//Bind VAO 0
+	glBindVertexArray(0);
+
+
 	//Main loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -193,7 +249,17 @@ int main()
 		glClearColor(0.f, 0.f, 0.f, 1.f);//alpha is for opacity
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+		//Use a program
+		glUseProgram(core_program);
+
+		//Bind vertex array object
+		glBindVertexArray(VAO);
+
+
 		  //draw
+		//glDrawArrays(GL_TRIANGLES, 0, nrOfVertices); //both works
+		glDrawElements(GL_TRIANGLES, nrOfIndices, GL_UNSIGNED_INT, 0);
+
 
 		//end draw
 
