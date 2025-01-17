@@ -296,10 +296,10 @@ int main()
 	SOIL_free_image_data(image1);
 
 	glm::mat4 ModelMatrix(1.f);
-	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(1.f, 0.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, 0.f));
+	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(50.f), glm::vec3(1.f, 0.f, 0.f));//x axis
+	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 1.f, 0.f));// y axis
+	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));//z axis 
 	ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.f));
 
 	glUseProgram(core_program);
